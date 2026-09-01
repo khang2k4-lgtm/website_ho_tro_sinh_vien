@@ -1,0 +1,13 @@
+{
+  "name": "humg-portal",
+  "private": true,
+  "scripts": {
+    "setup": "npm --prefix backend run db:setup",
+    "dev": "concurrently -n backend,frontend -c blue,cyan \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

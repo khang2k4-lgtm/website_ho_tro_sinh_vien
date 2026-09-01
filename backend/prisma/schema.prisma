@@ -1,0 +1,442 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  STAFF
+  STAFF_CARE
+  DEPT_MANAGER
+  ADMIN
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  RECEIVED
+  PROCESSING
+  NEED_SUPPLEMENT
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING
+  RESOLVED
+  CLOSED
+}
+
+enum TicketCategory {
+  HOC_VU
+  TAI_CHINH
+  CONG_TAC_SINH_VIEN
+  CO_SO_VAT_CHAT
+  CNTT
+  KHAC
+}
+
+enum ServiceCategory {
+  HOC_VU
+  CONG_TAC_SINH_VIEN
+  TAI_CHINH
+  THU_VIEN
+  CNTT
+  KHAC
+}
+
+enum NotificationType {
+  APPLICATION
+  TICKET
+  ANNOUNCEMENT
+  QUESTION
+  SYSTEM
+}
+
+enum ReportReason {
+  SPAM
+  WRONG_INFO
+  OFFENSIVE
+  FAKE
+  OTHER
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String
+  fullName      String
+  role          Role     @default(STUDENT)
+  studentId     String?  @unique
+  phone         String?
+  avatar        String?
+  dateOfBirth   DateTime?
+  faculty       String?
+  major         String?
+  className     String?
+  departmentId  String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  department         Department?  @relation(fields: [departmentId], references: [id])
+  applications       Application[]
+  assignedApps       Application[] @relation("AssignedStaff")
+  statusHistories    ApplicationStatusHistory[]
+  tickets            SupportTicket[]
+  assignedTickets    SupportTicket[] @relation("AssignedTicket")
+  ticketMessages     TicketMessage[]
+  posts              Post[]
+  comments           Comment[]
+  notifications      Notification[]
+  questions          Question[]
+  answers            Answer[]
+  questionVotes      QuestionVote[]
+  ratings            Rating[]
+  auditLogs          AuditLog[]
+  reports            Report[]
+  savedAnnouncements SavedAnnouncement[]
+
+  @@map("users")
+}
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  address     String?
+  building    String?
+  floor       String?
+  room        String?
+  phone       String?
+  email       String?
+  workingHours String?
+  latitude    Float?
+  longitude   Float?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  staff        User[]
+  services     Service[]
+  announcements Announcement[]
+  faqs         FAQ[]
+  documents    Document[]
+  tickets      SupportTicket[]
+  posts        Post[]
+
+  @@map("departments")
+}
+
+model Service {
+  id              String          @id @default(cuid())
+  name            String
+  slug            String          @unique
+  description     String?
+  category        ServiceCategory @default(KHAC)
+  departmentId    String
+  requiredDocs    Json?
+  steps           Json?
+  processingTime  String?
+  submissionType  String          @default("Online")
+  fee             String?
+  formFields      Json?
+  keywords        Json?
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  department   Department @relation(fields: [departmentId], references: [id])
+  applications Application[]
+  documents    ServiceDocument[]
+  ratings      Rating[]
+
+  @@map("services")
+}
+
+model ServiceDocument {
+  id        String   @id @default(cuid())
+  serviceId String
+  name      String
+  fileUrl   String
+  createdAt DateTime @default(now())
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@map("service_documents")
+}
+
+model Application {
+  id           String            @id @default(cuid())
+  code         String            @unique
+  studentId    String
+  serviceId    String
+  status       ApplicationStatus @default(SUBMITTED)
+  formData     Json
+  attachments  Json?
+  note         String?
+  rejectReason String?
+  assignedToId String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  student      User   @relation(fields: [studentId], references: [id])
+  service      Service @relation(fields: [serviceId], references: [id])
+  assignedTo   User?  @relation("AssignedStaff", fields: [assignedToId], references: [id])
+  statusHistory ApplicationStatusHistory[]
+  rating       Rating?
+
+  @@map("applications")
+}
+
+model ApplicationStatusHistory {
+  id            String            @id @default(cuid())
+  applicationId String
+  status        ApplicationStatus
+  note          String?
+  changedById   String
+  createdAt     DateTime          @default(now())
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  changedBy   User        @relation(fields: [changedById], references: [id])
+
+  @@map("application_status_history")
+}
+
+model SupportTicket {
+  id           String         @id @default(cuid())
+  code         String         @unique
+  title        String
+  content      String
+  category     TicketCategory @default(KHAC)
+  status       TicketStatus   @default(OPEN)
+  studentId    String
+  departmentId String?
+  assignedToId String?
+  attachments  Json?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  student    User        @relation(fields: [studentId], references: [id])
+  department Department? @relation(fields: [departmentId], references: [id])
+  assignedTo User?       @relation("AssignedTicket", fields: [assignedToId], references: [id])
+  messages   TicketMessage[]
+  rating     Rating?
+
+  @@map("support_tickets")
+}
+
+model TicketMessage {
+  id        String   @id @default(cuid())
+  ticketId  String
+  senderId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  sender User          @relation(fields: [senderId], references: [id])
+
+  @@map("ticket_messages")
+}
+
+model Announcement {
+  id           String   @id @default(cuid())
+  title        String
+  content      String
+  departmentId String?
+  tags         Json?
+  isPinned     Boolean  @default(false)
+  authorId     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  department Department? @relation(fields: [departmentId], references: [id])
+  savedBy    SavedAnnouncement[]
+
+  @@map("announcements")
+}
+
+model SavedAnnouncement {
+  id             String   @id @default(cuid())
+  userId         String
+  announcementId String
+  createdAt      DateTime @default(now())
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, announcementId])
+  @@map("saved_announcements")
+}
+
+model FAQ {
+  id           String   @id @default(cuid())
+  question     String
+  answer       String
+  departmentId String?
+  keywords     Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  department Department? @relation(fields: [departmentId], references: [id])
+
+  @@map("faqs")
+}
+
+model Post {
+  id           String   @id @default(cuid())
+  title        String
+  content      String
+  category     TicketCategory @default(KHAC)
+  authorId     String
+  departmentId String?
+  attachments  Json?
+  likes        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  author     User        @relation(fields: [authorId], references: [id])
+  department Department? @relation(fields: [departmentId], references: [id])
+  comments   Comment[]
+  reports    Report[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author User @relation(fields: [authorId], references: [id])
+
+  @@map("comments")
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  authorId  String
+  isResolved Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author  User           @relation(fields: [authorId], references: [id])
+  answers Answer[]
+  votes   QuestionVote[]
+
+  @@map("questions")
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  questionId String
+  authorId   String
+  content    String
+  isAccepted Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  author   User     @relation(fields: [authorId], references: [id])
+
+  @@map("answers")
+}
+
+model QuestionVote {
+  id         String @id @default(cuid())
+  questionId String
+  userId     String
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([questionId, userId])
+  @@map("question_votes")
+}
+
+model Document {
+  id           String   @id @default(cuid())
+  name         String
+  description  String?
+  category     String
+  fileUrl      String
+  departmentId String?
+  createdAt    DateTime @default(now())
+
+  department Department? @relation(fields: [departmentId], references: [id])
+
+  @@map("documents")
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType @default(SYSTEM)
+  link      String?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model Rating {
+  id            String   @id @default(cuid())
+  score         Int
+  comment       String?
+  userId        String
+  serviceId     String?
+  applicationId String?  @unique
+  ticketId      String?  @unique
+  createdAt     DateTime @default(now())
+
+  user        User             @relation(fields: [userId], references: [id])
+  service     Service?         @relation(fields: [serviceId], references: [id])
+  application Application?     @relation(fields: [applicationId], references: [id])
+  ticket      SupportTicket?   @relation(fields: [ticketId], references: [id])
+
+  @@map("ratings")
+}
+
+model Report {
+  id          String       @id @default(cuid())
+  postId      String
+  reporterId  String
+  reason      ReportReason
+  description String?
+  status      String       @default("PENDING")
+  createdAt   DateTime     @default(now())
+
+  post     Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reporter User @relation(fields: [reporterId], references: [id])
+
+  @@map("reports")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  action     String
+  entityType String
+  entityId   String
+  details    String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}
