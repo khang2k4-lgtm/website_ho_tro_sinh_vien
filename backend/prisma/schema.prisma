@@ -10,7 +10,6 @@ datasource db {
 enum Role {
   STUDENT
   STAFF
-  STAFF_CARE
   DEPT_MANAGER
   ADMIN
 }

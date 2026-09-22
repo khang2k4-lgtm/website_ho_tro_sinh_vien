@@ -15,7 +15,7 @@ router.get('/', authMiddleware, async (req, res) => {
 
     if (req.user.role === 'STUDENT') {
       where.studentId = req.user.id;
-    } else if (['STAFF', 'STAFF_CARE', 'DEPT_MANAGER'].includes(req.user.role)) {
+    } else if (['STAFF', 'DEPT_MANAGER', 'ADMIN'].includes(req.user.role)) {
       const user = await prisma.user.findUnique({ where: { id: req.user.id } });
       if (user?.departmentId) where.departmentId = user.departmentId;
     }
@@ -87,7 +87,7 @@ router.post('/', authMiddleware, requireRoles('STUDENT'), optionalUpload, async 
   }
 });
 
-router.patch('/:id/status', authMiddleware, requireRoles('STAFF', 'STAFF_CARE', 'DEPT_MANAGER', 'ADMIN'), async (req, res) => {
+router.patch('/:id/status', authMiddleware, requireRoles('STAFF', 'DEPT_MANAGER', 'ADMIN'), async (req, res) => {
   try {
     const { status, assignedToId } = req.body;
     const ticket = await prisma.supportTicket.update({

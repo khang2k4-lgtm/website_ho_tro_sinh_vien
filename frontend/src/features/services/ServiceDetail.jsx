@@ -23,12 +23,30 @@ export default function ServiceDetail() {
           <p className="page-subtitle">{service.description}</p>
 
           <div className="card" style={{ marginBottom: '1.5rem' }}>
+            <div className="card-header">Tóm tắt thủ tục</div>
+            <div className="card-body" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
+              <div>
+                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--muted)' }}>Cơ quan giải quyết</div>
+                <div style={{ fontWeight: 600, marginTop: '0.3rem' }}>{service.department?.name}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--muted)' }}>Thời gian</div>
+                <div style={{ fontWeight: 600, marginTop: '0.3rem' }}>{service.processingTime}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--muted)' }}>Hình thức</div>
+                <div style={{ fontWeight: 600, marginTop: '0.3rem' }}>{service.submissionType}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card" style={{ marginBottom: '1.5rem' }}>
             <div className="card-header">Hồ sơ cần thiết</div>
             <div className="card-body">
-              <ul style={{ listStyle: 'none' }}>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {service.requiredDocs?.map((d, i) => (
                   <li key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                    <CheckCircle size={18} style={{ color: 'var(--success)', flexShrink: 0 }} /> {d}
+                    <CheckCircle size={18} style={{ color: 'var(--success)', flexShrink: 0 }} /> <span>{d}</span>
                   </li>
                 ))}
               </ul>
@@ -36,9 +54,9 @@ export default function ServiceDetail() {
           </div>
 
           <div className="card">
-            <div className="card-header">Các bước thực hiện</div>
+            <div className="card-header">Quy trình giải quyết</div>
             <div className="card-body">
-              <ol style={{ paddingLeft: '1.25rem' }}>
+              <ol style={{ paddingLeft: '1.25rem', margin: 0 }}>
                 {service.steps?.map((s, i) => <li key={i} style={{ marginBottom: '0.5rem' }}>{s}</li>)}
               </ol>
             </div>

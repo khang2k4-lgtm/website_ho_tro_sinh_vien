@@ -29,9 +29,18 @@ export const CATEGORIES = {
 export const ROLE_LABELS = {
   STUDENT: 'Sinh viên',
   STAFF: 'Nhân viên',
-  STAFF_CARE: 'Chăm sóc SV',
-  DEPT_MANAGER: 'Quản lý phòng',
-  ADMIN: 'Admin',
+  DEPT_MANAGER: 'Quản lý phòng ban',
+  ADMIN: 'Quản trị viên',
+};
+
+export const STAFF_ROLES = ['STAFF', 'DEPT_MANAGER', 'ADMIN'];
+export const ROLE_OPTIONS = Object.entries(ROLE_LABELS);
+
+export const ROLE_DESCRIPTIONS = {
+  STUDENT: 'Tra cứu dịch vụ, nộp hồ sơ và theo dõi kết quả.',
+  STAFF: 'Tiếp nhận, xử lý hồ sơ và phản hồi sinh viên.',
+  DEPT_MANAGER: 'Điều phối yêu cầu, nhân sự và báo cáo phòng ban.',
+  ADMIN: 'Quản trị người dùng, phòng ban, dịch vụ và cấu hình hệ thống.',
 };
 
 export function formatDate(date) {

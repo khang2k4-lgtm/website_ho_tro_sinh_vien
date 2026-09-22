@@ -1,6 +1,6 @@
 .header {
   background: white;
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 18px rgb(22 105 153 / 0.08);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -15,8 +15,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
-  gap: 1rem;
+  height: 76px;
+  gap: 0.5rem;
 }
 
 .logo {
@@ -31,7 +31,9 @@
   height: 42px;
   background: white;
   color: var(--primary);
-  border-radius: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 10px rgb(22 105 153 / 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +52,7 @@
 .logo-title {
   display: block;
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--primary);
   line-height: 1.2;
 }
@@ -63,14 +65,14 @@
 
 .nav {
   display: flex;
-  gap: 0.25rem;
-  flex-wrap: wrap;
+  gap: 0.2rem;
+  flex-wrap: nowrap;
 }
 
 .nav-link {
-  padding: 0.5rem 0.75rem;
+  padding: 0.55rem 0.6rem;
   border-radius: 6px;
-  font-size: 0.8125rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: var(--text-muted);
   transition: all 0.2s;
@@ -80,7 +82,7 @@
 .nav-link:hover,
 .nav-link.active {
   color: var(--primary);
-  background: rgb(39 170 225 / 0.12);
+  background: rgb(40 169 223 / 0.14);
 }
 
 .header-actions {
@@ -195,6 +197,22 @@
 .auth-btns {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
+}
+
+.header-help-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-right: 0.25rem;
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.header-help-link:hover {
+  color: var(--primary-dark);
 }
 
 .search-bar {
@@ -222,7 +240,7 @@
   .nav {
     display: none;
     position: absolute;
-    top: 70px;
+    top: 76px;
     left: 0;
     right: 0;
     background: white;
@@ -238,5 +256,11 @@
 
   .mobile-menu {
     display: flex;
+  }
+}
+
+@media (max-width: 1200px) {
+  .header-help-link {
+    display: none;
   }
 }

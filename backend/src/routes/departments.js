@@ -30,7 +30,7 @@ router.get('/:slug', async (req, res) => {
         announcements: { orderBy: { createdAt: 'desc' }, take: 5 },
         documents: true,
         staff: {
-          where: { role: { in: ['STAFF', 'DEPT_MANAGER', 'STAFF_CARE'] } },
+          where: { role: { in: ['STAFF', 'DEPT_MANAGER'] } },
           select: { id: true, fullName: true, email: true, phone: true, avatar: true },
         },
         _count: { select: { services: true, tickets: true } },

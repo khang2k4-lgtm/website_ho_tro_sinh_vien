@@ -13,11 +13,10 @@ router.get('/', authMiddleware, async (req, res) => {
 
     if (req.user.role === 'STUDENT') {
       where.studentId = req.user.id;
-    } else if (['STAFF', 'DEPT_MANAGER', 'STAFF_CARE'].includes(req.user.role)) {
-      const user = await prisma.user.findUnique({ where: { id: req.user.id } });
-      if (user?.departmentId) {
-        where.service = { departmentId: user.departmentId };
-      }
+    } else if (['STAFF', 'DEPT_MANAGER', 'ADMIN'].includes(req.user.role)) {
+      // Tất cả vai trò xử lý đều phải thấy toàn bộ đơn đang được nộp trong hệ thống
+      // để sinh viên gửi đơn xong sẽ xuất hiện ngay ở nhân viên, quản lý phòng ban và admin.
+      // Không lọc theo departmentId nữa để tránh bỏ sót hồ sơ ở các bộ phận khác.
     }
 
     if (status) where.status = status;
@@ -105,7 +104,7 @@ router.post('/', authMiddleware, requireRoles('STUDENT'), optionalUpload, async 
   }
 });
 
-router.patch('/:id/status', authMiddleware, requireRoles('STAFF', 'DEPT_MANAGER', 'STAFF_CARE', 'ADMIN'), async (req, res) => {
+router.patch('/:id/status', authMiddleware, requireRoles('STAFF', 'DEPT_MANAGER', 'ADMIN'), async (req, res) => {
   try {
     const { status, note, rejectReason } = req.body;
     const application = await prisma.application.update({

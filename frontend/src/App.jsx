@@ -32,8 +32,7 @@ import ManageServices from './features/dashboard/ManageServices';
 import ManageUsers from './features/dashboard/ManageUsers';
 import AuditLogs from './features/dashboard/AuditLogs';
 import Reports from './features/dashboard/Reports';
-
-const staffRoles = ['ADMIN', 'STAFF', 'STAFF_CARE', 'DEPT_MANAGER'];
+import { STAFF_ROLES } from './utils/constants';
 
 export default function App() {
   return (
@@ -64,9 +63,10 @@ export default function App() {
           <Route path="/thong-bao-ca-nhan" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
         </Route>
 
-        <Route element={<ProtectedRoute roles={staffRoles}><DashboardLayout /></ProtectedRoute>}>
+        <Route element={<ProtectedRoute roles={STAFF_ROLES}><DashboardLayout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardOverview />} />
           <Route path="/dashboard/ho-so" element={<ManageApplications />} />
+          <Route path="/dashboard/ho-so/:id" element={<ApplicationDetail />} />
           <Route path="/dashboard/tickets" element={<ManageTickets />} />
           <Route path="/dashboard/phong-ban" element={<ManageDepartments />} />
           <Route path="/dashboard/dich-vu" element={<ManageServices />} />

@@ -30,7 +30,7 @@ export default function Register() {
       <div className="card">
         <div className="card-body">
           <h1 className="page-title" style={{ textAlign: 'center' }}>Đăng ký sinh viên</h1>
-          {error && <div style={{ background: '#fee2e2', color: '#991b1b', padding: '0.75rem', borderRadius: 8, marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
+          {error && <div style={{ background: 'var(--danger-bg)', color: 'var(--danger)', padding: '0.75rem', borderRadius: 8, marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="form-group"><label className="label">Họ tên *</label><input className="input" name="fullName" value={form.fullName} onChange={handleChange} required /></div>
             <div className="form-group"><label className="label">Email *</label><input className="input" type="email" name="email" value={form.email} onChange={handleChange} required /></div>

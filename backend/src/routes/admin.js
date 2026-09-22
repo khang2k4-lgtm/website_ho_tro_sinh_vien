@@ -5,7 +5,7 @@ import { authMiddleware, requireRoles, userSelect } from '../middleware/auth.js'
 
 const router = Router();
 
-router.get('/stats', authMiddleware, requireRoles('ADMIN', 'DEPT_MANAGER', 'STAFF_CARE', 'STAFF'), async (req, res) => {
+router.get('/stats', authMiddleware, requireRoles('ADMIN', 'DEPT_MANAGER', 'STAFF'), async (req, res) => {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -23,7 +23,7 @@ router.get('/stats', authMiddleware, requireRoles('ADMIN', 'DEPT_MANAGER', 'STAF
       ratingsByDept,
     ] = await Promise.all([
       prisma.user.count({ where: { role: 'STUDENT' } }),
-      prisma.user.count({ where: { role: { in: ['STAFF', 'STAFF_CARE', 'DEPT_MANAGER'] } } }),
+      prisma.user.count({ where: { role: { in: ['STAFF', 'DEPT_MANAGER'] } } }),
       prisma.department.count({ where: { isActive: true } }),
       prisma.service.count({ where: { isActive: true } }),
       prisma.application.count({ where: { createdAt: { gte: today } } }),
@@ -128,7 +128,7 @@ router.get('/audit-logs', authMiddleware, requireRoles('ADMIN'), async (req, res
   }
 });
 
-router.get('/reports', authMiddleware, requireRoles('ADMIN', 'STAFF_CARE'), async (req, res) => {
+router.get('/reports', authMiddleware, requireRoles('ADMIN', 'DEPT_MANAGER'), async (req, res) => {
   try {
     const reports = await prisma.report.findMany({
       include: {

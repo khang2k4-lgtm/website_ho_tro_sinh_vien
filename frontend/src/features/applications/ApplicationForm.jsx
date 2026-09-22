@@ -50,7 +50,7 @@ export default function ApplicationForm() {
       <h1 className="page-title">Nộp hồ sơ: {service.name}</h1>
       <p className="page-subtitle">Phòng: {service.department?.name}</p>
 
-      {error && <div style={{ background: '#fee2e2', color: '#991b1b', padding: '0.75rem', borderRadius: 8, marginBottom: '1rem' }}>{error}</div>}
+      {error && <div style={{ background: 'var(--danger-bg)', color: 'var(--danger)', padding: '0.75rem', borderRadius: 8, marginBottom: '1rem' }}>{error}</div>}
 
       <form onSubmit={handleSubmit} className="card">
         <div className="card-body">

@@ -1,0 +1,777 @@
+.map-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 3.5rem 0 4rem;
+    background: linear-gradient(135deg, #075b87, #168fc4 58%, #3eb5cf);
+    color: white;
+}
+
+.map-hero-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.map-hero-icon {
+    display: inline-flex;
+    padding: 0.75rem;
+    border: 1px solid rgb(255 255 255 / 0.28);
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.12);
+}
+
+.map-hero .page-kicker {
+    margin-top: 0.8rem;
+}
+
+.map-hero .page-title {
+    color: white;
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.map-hero .page-subtitle {
+    max-width: 700px;
+    margin: 0 auto;
+    color: rgb(255 255 255 / 0.82);
+}
+
+.map-page {
+    max-width: 1230px;
+    margin-top: 1.25rem;
+}
+
+.wayfinding-panel {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid #f5d4bd;
+    border-radius: 14px;
+    background: linear-gradient(120deg, #fffaf5, #fff 68%);
+    box-shadow: 0 10px 28px rgb(194 93 29 / 0.08);
+}
+
+.wayfinding-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.wayfinding-heading h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.wayfinding-heading h2 svg,
+.route-controls label span svg {
+    color: #d86228;
+}
+
+.wayfinding-heading p {
+    margin-top: 0.25rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.route-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.65rem;
+    border-radius: 999px;
+    background: #fff0e5;
+    color: #b44e1c;
+    font-size: 0.75rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.route-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.route-controls label {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.route-controls label span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--text-muted);
+    font-size: 0.73rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.route-controls select {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.6rem 2rem 0.6rem 0.75rem;
+    border: 1px solid #edcfba;
+    border-radius: 8px;
+    outline: 0;
+    background: white;
+    color: var(--text);
+    font: inherit;
+}
+
+.route-controls select:focus {
+    border-color: #d86228;
+    box-shadow: 0 0 0 3px rgb(216 98 40 / 0.12);
+}
+
+.route-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.3rem;
+    border-radius: 50%;
+    background: #fff0e5;
+    color: #d86228;
+}
+
+.route-summary {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f3dfd1;
+}
+
+.route-summary div {
+    display: grid;
+    gap: 0.05rem;
+}
+
+.route-summary strong {
+    color: #a74417;
+    font-size: 1.05rem;
+}
+
+.route-summary span {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+}
+
+.route-summary button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 34px;
+    margin-left: auto;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid #edcfba;
+    border-radius: 7px;
+    background: white;
+    color: #a74417;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 800;
+}
+
+.route-summary button:hover {
+    background: #fff4eb;
+}
+
+.route-warning {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f3dfd1;
+    color: #a74417;
+    font-size: 0.8rem;
+}
+
+.map-toolbar,
+.directory-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.map-toolbar h2,
+.directory-head h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.map-toolbar h2 svg {
+    color: var(--primary);
+}
+
+.map-kicker {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--primary);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.map-result-count,
+.directory-head>span {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.map-card,
+.location-directory {
+    margin-top: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.map-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(90deg, var(--primary-soft), white);
+}
+
+.map-card-head strong,
+.map-card-head span {
+    display: block;
+}
+
+.map-card-head strong {
+    font-size: 0.98rem;
+}
+
+.map-card-head>div span {
+    margin-top: 0.2rem;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
+.map-status {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--success);
+    font-size: 0.76rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.map-status span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+}
+
+.map-frame {
+    position: relative;
+    padding: 0.5rem;
+    background: var(--surface-muted);
+}
+
+.campus-map {
+    height: 470px;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.campus-marker-icon {
+    display: grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+}
+
+.campus-marker-icon span {
+    display: block;
+    width: 16px;
+    height: 16px;
+    border: 3px solid white;
+    border-radius: 50% 50% 50% 0;
+    background: #e75e28;
+    box-shadow: 0 2px 7px rgb(20 57 73 / 0.35);
+    transform: rotate(-45deg);
+}
+
+.map-empty {
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
+    padding: 2rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.map-empty svg {
+    color: var(--primary);
+}
+
+.location-directory {
+    padding: 1.25rem;
+    overflow: visible;
+}
+
+.location-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.map-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 240px;
+    color: var(--text-muted);
+}
+
+.map-search svg {
+    position: absolute;
+    left: 0.9rem;
+    pointer-events: none;
+}
+
+.map-search input {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.65rem 0.9rem 0.65rem 2.65rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: 0;
+    background: white;
+    color: var(--text);
+    font: inherit;
+}
+
+.map-search input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgb(40 169 223 / 0.14);
+}
+
+.area-tabs {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.area-tabs button {
+    min-height: 34px;
+    padding: 0.4rem 0.7rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--surface-muted);
+    color: var(--text-muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.area-tabs button:hover,
+.area-tabs button.active {
+    background: var(--primary);
+    color: white;
+}
+
+.location-list {
+    display: grid;
+    gap: 0.7rem;
+    margin-top: 1rem;
+}
+
+.location-card {
+    position: relative;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.location-card:hover,
+.location-card.selected {
+    border-color: var(--primary-light);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+}
+
+.location-card.selected {
+    background: #fbfeff;
+}
+
+.location-card-main {
+    display: flex;
+    gap: 0.75rem;
+    padding-right: 5rem;
+}
+
+.location-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--primary-soft);
+    color: var(--primary);
+}
+
+.location-card h3 {
+    margin: 0;
+    font-size: 0.96rem;
+}
+
+.location-card p {
+    margin: 0.25rem 0;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.location-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.location-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.location-card-side {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.location-card-side>span {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: var(--surface-muted);
+    color: var(--primary-dark);
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.location-card-side a {
+    display: inline-flex;
+    color: var(--primary);
+}
+
+.location-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.8rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--border);
+}
+
+.location-card-footer button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--primary);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.location-card-footer button:disabled {
+    color: var(--text-subtle);
+    cursor: not-allowed;
+}
+
+.location-card-footer>span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+}
+
+.directory-empty {
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+}
+
+@media (max-width: 700px) {
+    .map-hero {
+        padding: 2.5rem 0 3rem;
+    }
+
+    .map-toolbar,
+    .directory-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .wayfinding-heading {
+        flex-direction: column;
+    }
+
+    .route-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .route-arrow {
+        display: none;
+    }
+
+    .route-summary {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 0.85rem 1.25rem;
+    }
+
+    .route-summary button {
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+    }
+
+    .map-card-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .campus-map {
+        height: 360px;
+    }
+
+    .location-controls {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .map-search {
+        min-width: 0;
+    }
+
+    .area-tabs {
+        width: 100%;
+    }
+
+    .area-tabs button {
+        flex: 1;
+    }
+
+    .location-card-main {
+        padding-right: 3rem;
+    }
+
+    .location-card-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+.campus-plan {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background-color: #eaf4ec;
+    background-image: linear-gradient(rgb(115 155 125 / 0.08) 1px, transparent 1px), linear-gradient(90deg, rgb(115 155 125 / 0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+.campus-plan::before,
+.campus-plan::after {
+    position: absolute;
+    content: '';
+    background: rgb(255 255 255 / 0.9);
+    box-shadow: 0 0 0 1px rgb(105 143 112 / 0.22);
+}
+
+.campus-plan::before {
+    top: -15%;
+    left: 48%;
+    width: 17%;
+    height: 130%;
+    transform: rotate(12deg);
+}
+
+.campus-plan::after {
+    top: 46%;
+    left: -10%;
+    width: 120%;
+    height: 14%;
+    transform: rotate(-8deg);
+}
+
+.campus-plan-road {
+    position: absolute;
+    z-index: 1;
+    border: 2px dashed rgb(105 143 112 / 0.28);
+}
+
+.campus-plan-road-main {
+    top: -15%;
+    left: 31%;
+    width: 38%;
+    height: 130%;
+    border-top: 0;
+    border-bottom: 0;
+    transform: rotate(-18deg);
+}
+
+.campus-plan-road-side {
+    top: 35%;
+    left: -5%;
+    width: 110%;
+    height: 25%;
+    border-left: 0;
+    border-right: 0;
+    transform: rotate(13deg);
+}
+
+.campus-plan-building {
+    position: absolute;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    padding: 0.35rem;
+    border: 2px solid rgb(46 101 69 / 0.45);
+    border-radius: 5px;
+    background: #d8ead7;
+    color: #28583b;
+    font-size: 0.61rem;
+    font-weight: 900;
+    line-height: 1.15;
+    text-align: center;
+    box-shadow: 0 3px 7px rgb(40 88 59 / 0.1);
+}
+
+.campus-plan-gate {
+    top: 68%;
+    left: 7%;
+    width: 18%;
+    height: 11%;
+    background: #ffe6c7;
+    border-color: #da9a4d;
+    color: #925517;
+}
+
+.campus-plan-a {
+    top: 60%;
+    left: 22%;
+    width: 14%;
+    height: 15%;
+}
+
+.campus-plan-b {
+    top: 72%;
+    left: 35%;
+    width: 14%;
+    height: 13%;
+}
+
+.campus-plan-c {
+    top: 38%;
+    left: 39%;
+    width: 18%;
+    height: 18%;
+    background: #c9e4f2;
+    border-color: #6babc6;
+    color: #235b73;
+}
+
+.campus-plan-d {
+    top: 20%;
+    left: 26%;
+    width: 14%;
+    height: 14%;
+}
+
+.campus-plan-library {
+    top: 15%;
+    left: 55%;
+    width: 17%;
+    height: 14%;
+    background: #e6ddf3;
+    border-color: #a38bc2;
+    color: #5d477f;
+}
+
+.campus-plan-auditorium {
+    top: 64%;
+    left: 58%;
+    width: 19%;
+    height: 12%;
+    background: #f5dfc7;
+    border-color: #d4a26b;
+    color: #895826;
+}
+
+.campus-plan-canteen {
+    top: 29%;
+    left: 70%;
+    width: 17%;
+    height: 12%;
+    background: #f5e7b9;
+    border-color: #cba944;
+    color: #775d14;
+}
+
+.campus-plan-dorm {
+    top: 8%;
+    left: 76%;
+    width: 18%;
+    height: 15%;
+    background: #d9e4f5;
+    border-color: #7b9ac4;
+    color: #36547c;
+}
+
+.campus-plan-compass {
+    position: absolute;
+    z-index: 4;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid rgb(40 88 59 / 0.22);
+    border-radius: 5px;
+    background: rgb(255 255 255 / 0.85);
+    color: #28583b;
+    font-size: 0.68rem;
+    font-weight: 900;
+}

@@ -1,33 +1,41 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, FileText, Ticket, Users, Building2, Settings, ScrollText, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, FileText, Ticket, Users, Building2, Settings, ScrollText, BarChart3, UserCog, ClipboardList } from 'lucide-react';
 import Header from '../components/common/Header';
 import { useAuth } from '../context/AuthContext';
 import './DashboardLayout.css';
+import { ROLE_LABELS } from '../utils/constants';
 
 export default function DashboardLayout() {
   const { user } = useAuth();
 
-  const links = [
-    { to: '/dashboard', label: 'Tổng quan', icon: LayoutDashboard, roles: ['ADMIN', 'STAFF', 'STAFF_CARE', 'DEPT_MANAGER'] },
-    { to: '/dashboard/ho-so', label: 'Quản lý hồ sơ', icon: FileText, roles: ['ADMIN', 'STAFF', 'STAFF_CARE', 'DEPT_MANAGER'] },
-    { to: '/dashboard/tickets', label: 'Ticket hỗ trợ', icon: Ticket, roles: ['ADMIN', 'STAFF', 'STAFF_CARE', 'DEPT_MANAGER'] },
-    { to: '/dashboard/phong-ban', label: 'Phòng ban', icon: Building2, roles: ['ADMIN'] },
-    { to: '/dashboard/dich-vu', label: 'Dịch vụ', icon: Settings, roles: ['ADMIN', 'DEPT_MANAGER'] },
-    { to: '/dashboard/nguoi-dung', label: 'Người dùng', icon: Users, roles: ['ADMIN'] },
-    { to: '/dashboard/audit', label: 'Audit Log', icon: ScrollText, roles: ['ADMIN'] },
-    { to: '/dashboard/bao-cao', label: 'Báo cáo', icon: BarChart3, roles: ['ADMIN', 'STAFF_CARE'] },
+  const links = user?.role === 'ADMIN' ? [
+    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/dashboard/nguoi-dung', label: 'Quản lý người dùng', icon: Users },
+    { to: '/dashboard/phong-ban', label: 'Quản lý phòng ban', icon: Building2 },
+    { to: '/dashboard/dich-vu', label: 'Quản lý dịch vụ', icon: Settings },
+    { to: '/dashboard/ho-so', label: 'Quản lý yêu cầu', icon: FileText },
+    { to: '/dashboard/bao-cao', label: 'Báo cáo - thống kê', icon: BarChart3 },
+    { to: '/dashboard/audit', label: 'Nhật ký hệ thống', icon: ScrollText },
+  ] : user?.role === 'DEPT_MANAGER' ? [
+    { to: '/dashboard', label: 'Tổng quan phòng ban', icon: LayoutDashboard },
+    { to: '/dashboard/ho-so', label: 'Quản lý yêu cầu', icon: ClipboardList },
+    { to: '/dashboard/tickets', label: 'Hỗ trợ sinh viên', icon: Ticket },
+    { to: '/dashboard/dich-vu', label: 'Dịch vụ phòng ban', icon: Settings },
+    { to: '/dashboard/bao-cao', label: 'Báo cáo phòng ban', icon: BarChart3 },
+  ] : [
+    { to: '/dashboard', label: 'Tổng quan', icon: LayoutDashboard },
+    { to: '/dashboard/ho-so', label: 'Yêu cầu cần xử lý', icon: FileText },
+    { to: '/dashboard/tickets', label: 'Phản hồi hỗ trợ', icon: Ticket },
   ];
-
-  const visibleLinks = links.filter((l) => l.roles.includes(user?.role));
 
   return (
     <div className="dashboard-layout">
       <Header />
       <div className="dashboard-body">
         <aside className="dashboard-sidebar">
-          <div className="sidebar-title">Quản trị</div>
+          <div className="sidebar-title">{ROLE_LABELS[user?.role] || 'Khu vực nghiệp vụ'}</div>
           <nav>
-            {visibleLinks.map(({ to, label, icon: Icon }) => (
+            {links.map(({ to, label, icon: Icon }) => (
               <NavLink key={to} to={to} end={to === '/dashboard'} className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
                 <Icon size={18} /> {label}
               </NavLink>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import './Footer.css';
+import { Mail, MapPin, Phone } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -24,9 +25,9 @@ export default function Footer() {
         </div>
         <div>
           <h4>Liên hệ</h4>
-          <p>📍Số 18 Phố Viên, Hà Nội</p>
-          <p>📞 024.3838.1234</p>
-          <p>📧 ctsv@humg.edu.vn</p>
+          <p><MapPin size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />Số 18 Phố Viên, Hà Nội</p>
+          <p><Phone size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />024.3838.1234</p>
+          <p><Mail size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} />ctsv@humg.edu.vn</p>
         </div>
       </div>
       <div className="footer-bottom">

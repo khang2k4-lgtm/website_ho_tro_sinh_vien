@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Search, Bell, Menu, X, User, LogOut } from 'lucide-react';
+import { Search, Bell, Menu, X, User, LogOut, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import logo from '../../assets/logomdc.png';
 import './Header.css';
+import { STAFF_ROLES } from '../../utils/constants';
 
 
 export default function Header() {
@@ -15,6 +16,7 @@ export default function Header() {
   const [query, setQuery] = useState('');
   const [notifCount, setNotifCount] = useState(0);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const isStaffArea = user && STAFF_ROLES.includes(user.role);
 
   useEffect(() => {
     if (user) {
@@ -55,27 +57,27 @@ export default function Header() {
           </div>
         </Link>
 
-        <nav className={`nav ${menuOpen ? 'open' : ''}`}>
+        {!isStaffArea && <nav className={`nav ${menuOpen ? 'open' : ''}`}>
           {navLinks.map((l) => (
             <NavLink key={l.to} to={l.to} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={() => setMenuOpen(false)}>
               {l.label}
             </NavLink>
           ))}
-        </nav>
+        </nav>}
 
         <div className="header-actions">
-          <button className="icon-btn" onClick={() => setSearchOpen(!searchOpen)} aria-label="Tìm kiếm">
+          <button className="icon-btn" onClick={() => setSearchOpen(!searchOpen)} aria-label="Tìm kiếm" aria-expanded={searchOpen}>
             <Search size={20} />
           </button>
 
           {user ? (
             <>
-              <Link to="/thong-bao-ca-nhan" className="icon-btn notif-btn">
+              <Link to="/thong-bao-ca-nhan" className="icon-btn notif-btn" aria-label={`Thông báo${notifCount > 0 ? `, ${notifCount} chưa đọc` : ''}`}>
                 <Bell size={20} />
                 {notifCount > 0 && <span className="notif-badge">{notifCount}</span>}
               </Link>
               <div className="user-menu-wrap">
-                <button className="avatar-btn" onClick={() => setShowUserMenu(!showUserMenu)}>
+                <button className="avatar-btn" onClick={() => setShowUserMenu(!showUserMenu)} aria-label="Mở menu tài khoản" aria-expanded={showUserMenu}>
                   <div className="avatar">{user.fullName?.charAt(0)}</div>
                 </button>
                 {showUserMenu && (
@@ -85,7 +87,7 @@ export default function Header() {
                       <small>{user.email}</small>
                     </div>
                     <Link to="/tai-khoan" onClick={() => setShowUserMenu(false)}><User size={16} /> Tài khoản</Link>
-                    {['ADMIN', 'STAFF', 'STAFF_CARE', 'DEPT_MANAGER'].includes(user.role) && (
+                    {STAFF_ROLES.includes(user.role) && (
                       <Link to="/dashboard" onClick={() => setShowUserMenu(false)}>Dashboard</Link>
                     )}
                     <button onClick={() => { logout(); navigate('/'); setShowUserMenu(false); }}>
@@ -97,14 +99,15 @@ export default function Header() {
             </>
           ) : (
             <div className="auth-btns">
+              <Link to="/ho-tro" className="header-help-link">Cần hỗ trợ? <ArrowRight size={14} /></Link>
               <Link to="/dang-nhap" className="btn btn-outline btn-sm">Đăng nhập</Link>
               <Link to="/dang-ky" className="btn btn-primary btn-sm">Đăng ký</Link>
             </div>
           )}
 
-          <button className="icon-btn mobile-menu" onClick={() => setMenuOpen(!menuOpen)}>
+          {!isStaffArea && <button className="icon-btn mobile-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Đóng menu' : 'Mở menu'} aria-expanded={menuOpen}>
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          </button>}
         </div>
       </div>
 

@@ -35,7 +35,7 @@ export default function Reports() {
                   <XAxis dataKey="name" />
                   <YAxis allowDecimals={false} />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#27aae1" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="count" fill="var(--primary)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

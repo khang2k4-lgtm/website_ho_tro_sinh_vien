@@ -62,7 +62,7 @@ router.post('/', authMiddleware, requireRoles('STUDENT'), async (req, res) => {
   }
 });
 
-router.post('/:id/answers', authMiddleware, requireRoles('STAFF', 'STAFF_CARE', 'DEPT_MANAGER', 'ADMIN'), async (req, res) => {
+router.post('/:id/answers', authMiddleware, requireRoles('STAFF', 'DEPT_MANAGER', 'ADMIN'), async (req, res) => {
   try {
     const answer = await prisma.answer.create({
       data: { questionId: req.params.id, authorId: req.user.id, content: req.body.content },

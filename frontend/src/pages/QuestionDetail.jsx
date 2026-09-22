@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { STAFF_ROLES } from '../utils/constants';
 import api from '../services/api';
 import { formatDate } from '../utils/constants';
 
@@ -26,7 +27,7 @@ export default function QuestionDetail() {
 
   if (!item) return <div className="container loading">Đang tải...</div>;
 
-  const canAnswer = user && ['ADMIN', 'STAFF', 'STAFF_CARE', 'DEPT_MANAGER'].includes(user.role);
+  const canAnswer = user && STAFF_ROLES.includes(user.role);
 
   return (
     <div className="container" style={{ padding: '2rem 1.5rem', maxWidth: 800 }}>

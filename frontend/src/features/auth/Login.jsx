@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { STAFF_ROLES } from '../../utils/constants';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ export default function Login() {
     setLoading(true);
     try {
       const user = await login(email, password);
-      if (['ADMIN', 'STAFF', 'STAFF_CARE', 'DEPT_MANAGER'].includes(user.role)) {
+      if (STAFF_ROLES.includes(user.role)) {
         navigate('/dashboard');
       } else {
         navigate('/tai-khoan');
@@ -35,7 +36,7 @@ export default function Login() {
           <h1 className="page-title" style={{ textAlign: 'center' }}>Đăng nhập</h1>
           <p className="page-subtitle" style={{ textAlign: 'center' }}>Cổng dịch vụ sinh viên HUMG</p>
 
-          {error && <div style={{ background: '#fee2e2', color: '#991b1b', padding: '0.75rem', borderRadius: 8, marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
+          {error && <div style={{ background: 'var(--danger-bg)', color: 'var(--danger)', padding: '0.75rem', borderRadius: 8, marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
@@ -58,6 +59,8 @@ export default function Login() {
           <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'var(--bg)', borderRadius: 8, fontSize: '0.8125rem' }}>
             <strong>Demo:</strong><br />
             Sinh viên: sv001@humg.edu.vn / 123456<br />
+            Nhân viên: nv.ctsv@humg.edu.vn / 123456<br />
+            Quản lý phòng: ql.ctsv@humg.edu.vn / 123456<br />
             Admin: admin@humg.edu.vn / 123456
           </div>
         </div>
