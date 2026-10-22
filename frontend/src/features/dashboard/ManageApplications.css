@@ -1,0 +1,92 @@
+.manage-applications-page .card-body {
+  padding: 1rem;
+}
+
+.applications-table-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.applications-table {
+  width: 100%;
+  min-width: 920px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+.application-code-column {
+  width: 14%;
+}
+
+.application-service-column {
+  width: 32%;
+}
+
+.application-student-column {
+  width: 17%;
+}
+
+.application-date-column {
+  width: 14%;
+}
+
+.application-status-column {
+  width: 14%;
+}
+
+.application-action-column {
+  width: 9%;
+}
+
+.applications-table th,
+.applications-table td {
+  padding: 0.85rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.applications-table th {
+  background: #f7fafc;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.applications-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.applications-table tbody tr:hover {
+  background: #f8fbff;
+}
+
+.applications-table td:first-child,
+.applications-table td:nth-child(4),
+.applications-table td:last-child {
+  white-space: nowrap;
+}
+
+.applications-table td:nth-child(2) {
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.applications-table td .badge {
+  white-space: nowrap;
+}
+
+.application-action-link {
+  justify-content: center;
+  min-width: 4.5rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .manage-applications-page .card-body {
+    padding: 0.75rem;
+  }
+}

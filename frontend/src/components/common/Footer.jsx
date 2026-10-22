@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer-grid">
         <div>
-          <h3>HUMG Portal</h3>
+          <h3>HUMG</h3>
           <p>Cổng dịch vụ và hỗ trợ sinh viên Trường Đại học Mỏ - Địa chất</p>
         </div>
         <div>
@@ -32,7 +32,7 @@ export default function Footer() {
       </div>
       <div className="footer-bottom">
         <div className="container">
-          © 2026 Trường ĐH Mỏ - Địa chất. Đồ án Frontend.
+          © 2026 Trường ĐH Mỏ - Địa chất.
         </div>
       </div>
     </footer>

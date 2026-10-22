@@ -19,6 +19,7 @@ import adminRoutes from './routes/admin.js';
 import documentRoutes from './routes/documents.js';
 import ratingRoutes from './routes/ratings.js';
 import reportRoutes from './routes/reports.js';
+import liveChatRoutes from './routes/liveChat.js';
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/ratings', ratingRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/live-chat', liveChatRoutes);
 
 app.use((err, _req, res, _next) => {
   console.error(err);

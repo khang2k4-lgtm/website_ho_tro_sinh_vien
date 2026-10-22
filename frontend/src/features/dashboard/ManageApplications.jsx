@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { STATUS_LABELS, formatDate } from '../../utils/constants';
 import { CalendarDays, Search, SlidersHorizontal } from 'lucide-react';
+import './ManageApplications.css';
 
 const STATUSES = Object.keys(STATUS_LABELS);
 
@@ -36,30 +37,39 @@ export default function ManageApplications() {
   });
 
   return (
-    <div className="dashboard-page">
+    <div className="dashboard-page manage-applications-page">
       <div className="dashboard-heading"><div><span className="dashboard-kicker">WORK QUEUE</span><h1 className="page-title">Yêu cầu cần xử lý</h1><p className="page-subtitle">Tra cứu hồ sơ theo mã, sinh viên hoặc dịch vụ và mở chi tiết để xử lý.</p></div><div className="staff-list-count">{visibleApps.length} hồ sơ</div></div>
       <div className="staff-filters"><label className="field-search"><Search size={18} /><input className="input" aria-label="Tìm hồ sơ" placeholder="Tìm mã, dịch vụ, sinh viên" value={search} onChange={(e) => setSearch(e.target.value)} /></label><label className="filter-control"><SlidersHorizontal size={16} /><select className="select" aria-label="Lọc trạng thái" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}><option value="ALL">Tất cả trạng thái</option>{STATUSES.map((status) => <option key={status} value={status}>{STATUS_LABELS[status].label}</option>)}</select></label><label className="filter-control"><CalendarDays size={16} /><select className="select" aria-label="Lọc ngày" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)}><option value="ALL">Tất cả ngày</option><option value="TODAY">Hôm nay</option><option value="WEEK">7 ngày qua</option></select></label><button className="btn btn-outline btn-sm" type="button" onClick={() => { setSearch(''); setStatusFilter('ALL'); setDateFilter('ALL'); }}>Đặt lại</button></div>
       <div className="card">
-        <div className="card-body" style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+        <div className="card-body applications-table-scroll">
+          <table className="applications-table">
+            <colgroup>
+              <col className="application-code-column" />
+              <col className="application-service-column" />
+              <col className="application-student-column" />
+              <col className="application-date-column" />
+              <col className="application-status-column" />
+              <col className="application-action-column" />
+            </colgroup>
             <thead>
-              <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
-                <th style={{ padding: '0.75rem' }}>Mã</th>
-                <th>Dịch vụ</th>
-                <th>Sinh viên</th>
-                <th>Ngày</th>
-                <th>Trạng thái</th>
+              <tr>
+                <th scope="col">Mã hồ sơ</th>
+                <th scope="col">Dịch vụ</th>
+                <th scope="col">Sinh viên</th>
+                <th scope="col">Ngày gửi</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Thao tác</th>
               </tr>
             </thead>
             <tbody>
               {visibleApps.map((a) => (
-                <tr key={a.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td style={{ padding: '0.75rem' }}><Link className="staff-code" to={`/dashboard/ho-so/${a.id}`}>{a.code}</Link></td>
+                <tr key={a.id}>
+                  <td><Link className="staff-code" to={`/dashboard/ho-so/${a.id}`}>{a.code}</Link></td>
                   <td>{a.service?.name}</td>
                   <td>{a.student?.fullName}</td>
                   <td>{formatDate(a.createdAt)}</td>
                   <td><span className={`badge ${STATUS_LABELS[a.status]?.class}`}>{STATUS_LABELS[a.status]?.label}</span></td>
-                  <td><Link className="btn btn-outline btn-sm" to={`/dashboard/ho-so/${a.id}`}>Xem và xử lý</Link></td>
+                  <td><Link className="btn btn-outline btn-sm application-action-link" to={`/dashboard/ho-so/${a.id}`}>Xử lý</Link></td>
                 </tr>
               ))}
             </tbody>

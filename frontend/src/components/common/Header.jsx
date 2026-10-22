@@ -17,14 +17,26 @@ export default function Header() {
   const [notifCount, setNotifCount] = useState(0);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const isStaffArea = user && STAFF_ROLES.includes(user.role);
+  const userId = user?.id;
 
   useEffect(() => {
-    if (user) {
-      api.get('/notifications/unread-count')
-        .then((r) => setNotifCount(r.data.count))
-        .catch(() => { });
-    }
-  }, [user]);
+    if (!userId) return undefined;
+    let active = true;
+    const fetchUnreadCount = async () => {
+      try {
+        const response = await api.get('/notifications/unread-count');
+        if (active) setNotifCount(response.data.count);
+      } catch (error) {
+        console.error('Unable to refresh notification count:', error);
+      }
+    };
+    fetchUnreadCount();
+    const interval = window.setInterval(fetchUnreadCount, 10000);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+    };
+  }, [userId]);
 
   const navLinks = [
     { to: '/', label: 'Trang chủ' },
@@ -34,6 +46,7 @@ export default function Header() {
     { to: '/hoi-dap', label: 'Hỏi đáp' },
     { to: '/thong-bao', label: 'Thông báo' },
     { to: '/ho-tro', label: 'Hỗ trợ' },
+    ...(user?.role === 'STUDENT' ? [{ to: '/chat-truc-tiep', label: 'Chat trực tiếp' }] : []),
     { to: '/bando', label: 'Bản đồ' },
     { to: '/tra-cuu', label: 'Tra cứu' },
   ];
@@ -52,7 +65,7 @@ export default function Header() {
             <img src={logo} alt="Logo HUMG" />
           </div>
           <div>
-            <span className="logo-title">HUMG Portal</span>
+            <span className="logo-title">HUMG</span>
             <span className="logo-sub">Cổng dịch vụ sinh viên</span>
           </div>
         </Link>
@@ -74,7 +87,7 @@ export default function Header() {
             <>
               <Link to="/thong-bao-ca-nhan" className="icon-btn notif-btn" aria-label={`Thông báo${notifCount > 0 ? `, ${notifCount} chưa đọc` : ''}`}>
                 <Bell size={20} />
-                {notifCount > 0 && <span className="notif-badge">{notifCount}</span>}
+                {userId && notifCount > 0 && <span className="notif-badge">{notifCount}</span>}
               </Link>
               <div className="user-menu-wrap">
                 <button className="avatar-btn" onClick={() => setShowUserMenu(!showUserMenu)} aria-label="Mở menu tài khoản" aria-expanded={showUserMenu}>

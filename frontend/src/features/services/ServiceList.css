@@ -1,3 +1,20 @@
+.service-list-hero::before,
+.service-list-hero::after {
+    display: none;
+}
+
+.service-list-content .summary-strip {
+    gap: 1.25rem;
+    margin: 0 0 1.75rem;
+}
+
+.service-list-content .summary-item {
+    min-height: 88px;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 1.1rem 1.25rem;
+}
+
 .service-filters {
     display: flex;
     gap: 1rem;

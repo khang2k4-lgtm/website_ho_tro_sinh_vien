@@ -248,7 +248,7 @@
 }
 
 .hero-search button:hover {
-  background: var(--accent-dark);
+  background: var(--text-muted);
 
   transform: translateY(-1px);
 }
@@ -1135,7 +1135,7 @@
 }
 
 .btn-primary:hover {
-  background: var(--primary-dark);
+  background: var(--text-muted);
 
   border-color: var(--primary-dark);
 }
@@ -1149,9 +1149,11 @@
 }
 
 .btn-outline:hover {
-  border-color: var(--primary);
+  border-color: var(--text-muted);
 
-  color: var(--primary);
+  background: var(--surface-muted);
+
+  color: var(--text);
 }
 
 

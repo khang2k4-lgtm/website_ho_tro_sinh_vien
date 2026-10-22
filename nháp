@@ -1,0 +1,7 @@
+<div class="w-full h-[500px] md:h-[600px] rounded-2xl overflow-hidden shadow-lg border border-slate-200">
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!4v1791260976458!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJQ3poNkdKR2c.!2m2!1d21.07207031021246!2d105.7739289706766!3f343.2853470971942!4f-70.10640269531254!5f3.325193203789971"
+        class="w-full h-full border-0" allowfullscreen="" loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
+</div>

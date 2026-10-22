@@ -1,28 +1,80 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, CheckCircle2, Download, Eye, FileText, Save } from 'lucide-react';
+import {
+  ArrowLeft,
+  Building2,
+  CalendarDays,
+  CheckCircle2,
+  Download,
+  ExternalLink,
+  Eye,
+  FileText,
+  Mail,
+  Phone,
+  RotateCw,
+  Save,
+  UserRound,
+  ZoomIn,
+  ZoomOut,
+} from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../services/api';
 import { STAFF_ROLES, STATUS_LABELS, formatDate } from '../../utils/constants';
 import { useAuth } from '../../context/AuthContext';
+
+const FORM_FIELD_LABELS = {
+  fullName: 'Họ và tên',
+  studentId: 'Mã số sinh viên',
+  faculty: 'Khoa / Chuyên ngành',
+  className: 'Lớp',
+  email: 'Email',
+  phone: 'Số điện thoại',
+  purpose: 'Nội dung yêu cầu',
+  reason: 'Lý do',
+  note: 'Ghi chú',
+};
+
+function formatFieldLabel(key) {
+  return FORM_FIELD_LABELS[key] || key
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/[_-]/g, ' ')
+    .replace(/^./, (letter) => letter.toUpperCase());
+}
+
+function formatFieldValue(value) {
+  if (Array.isArray(value)) return value.join(', ');
+  if (value && typeof value === 'object') return JSON.stringify(value);
+  return String(value ?? '');
+}
 
 export default function ApplicationDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [app, setApp] = useState(null);
+  const [loadError, setLoadError] = useState({ id: '', message: '' });
   const [rating, setRating] = useState({ score: 5, comment: '' });
   const [response, setResponse] = useState('');
   const [nextStatus, setNextStatus] = useState('PROCESSING');
   const [saving, setSaving] = useState(false);
+  const [pdfZoom, setPdfZoom] = useState(100);
+  const [pdfRotation, setPdfRotation] = useState(0);
   const isStaff = STAFF_ROLES.includes(user?.role);
 
   useEffect(() => {
-    api.get(`/applications/${id}`).then((r) => setApp(r.data));
+    let active = true;
+    api.get(`/applications/${id}`)
+      .then((r) => {
+        if (!active) return;
+        setApp(r.data);
+        setNextStatus(r.data.status === 'SUBMITTED' ? 'RECEIVED' : r.data.status);
+      })
+      .catch((err) => {
+        if (active) setLoadError({ id, message: err.response?.data?.message || 'Không thể tải thông tin yêu cầu.' });
+      });
+    return () => {
+      active = false;
+    };
   }, [id]);
-
-  useEffect(() => {
-    if (app) setNextStatus(app.status === 'SUBMITTED' ? 'RECEIVED' : app.status);
-  }, [app]);
 
   const updateApplication = async (status = app.status) => {
     if (!response.trim() && status === app.status) return;
@@ -47,11 +99,28 @@ export default function ApplicationDetail() {
     api.get(`/applications/${id}`).then((r) => setApp(r.data));
   };
 
-  if (!app) return <div className="loading container">Đang tải...</div>;
+  if (loadError.id === id && loadError.message) {
+    return (
+      <div className="application-detail-page">
+        <div className="application-detail-state">
+          <p role="alert">{loadError.message}</p>
+          <button type="button" className="btn btn-outline" onClick={() => navigate(-1)}>
+            <ArrowLeft size={16} /> Quay lại
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!app || app.id !== id) return <div className="loading container">Đang tải thông tin yêu cầu...</div>;
 
   const status = STATUS_LABELS[app.status];
   const attachments = Array.isArray(app.attachments) ? app.attachments : [];
   const pdfFiles = attachments.filter((file) => file?.toLowerCase().endsWith('.pdf'));
+  const formData = app.formData && typeof app.formData === 'object' ? app.formData : {};
+  const requestFields = Object.entries(formData);
+  const studentName = app.student?.fullName || 'Sinh viên';
+  const studentInitial = studentName.trim().charAt(0).toLocaleUpperCase('vi-VN') || 'S';
 
   return (
     <div className={`application-detail-page ${isStaff ? 'staff-detail-page' : ''}`}>
@@ -61,7 +130,7 @@ export default function ApplicationDetail() {
         </button>
 
         <div className="application-detail-title-wrap">
-          <span className="dashboard-kicker">{isStaff ? 'WORK QUEUE' : 'HỒ SƠ CỦA TÔI'}</span>
+          <span className="dashboard-kicker">{isStaff ? 'HỒ SƠ ĐANG XỬ LÝ' : 'TRANG SINH VIÊN / HỒ SƠ CỦA TÔI'}</span>
           <h1>Chi tiết yêu cầu <strong>#{app.code}</strong></h1>
         </div>
 
@@ -72,11 +141,11 @@ export default function ApplicationDetail() {
         <div className="application-main-column">
           <section className="detail-panel student-summary">
             <div className="detail-panel-title">
-              <div className="student-avatar">{app.student?.fullName?.charAt(0)}</div>
+              <div className="student-avatar">{studentInitial}</div>
               <div>
                 <span className="detail-eyebrow">SINH VIÊN</span>
-                <h2>{app.student?.fullName}</h2>
-                <p>MSSV: {app.student?.studentId} · {app.student?.email}</p>
+                <h2>{studentName}</h2>
+                <p>MSSV: {app.student?.studentId || 'Chưa cập nhật'} · {app.student?.email || 'Chưa cập nhật email'}</p>
               </div>
             </div>
           </section>
@@ -89,25 +158,39 @@ export default function ApplicationDetail() {
 
             <div className="request-meta">
               <div>
+                <FileText size={15} aria-hidden="true" />
                 <span>Dịch vụ</span>
                 <strong>{app.service?.name}</strong>
               </div>
               <div>
+                <CalendarDays size={15} aria-hidden="true" />
                 <span>Ngày gửi</span>
                 <strong>{formatDate(app.createdAt)}</strong>
               </div>
               <div>
+                <Building2 size={15} aria-hidden="true" />
                 <span>Phòng ban</span>
-                <strong>{app.service?.department?.name}</strong>
+                <strong>{app.service?.department?.name || 'Chưa phân phòng ban'}</strong>
               </div>
             </div>
 
             <div className="request-content">
               <span className="detail-eyebrow">NỘI DUNG YÊU CẦU</span>
-              {Object.entries(app.formData || {}).map(([key, value]) => (
-                <p key={key}><strong>{key}:</strong> {String(value)}</p>
-              ))}
-              {app.note && <p><strong>Ghi chú sinh viên:</strong> {app.note}</p>}
+              {requestFields.length > 0 ? (
+                <dl className="request-fields">
+                  {requestFields.map(([key, value]) => (
+                    <div className="request-field" key={key}>
+                      <dt>{formatFieldLabel(key)}</dt>
+                      <dd>{formatFieldValue(value) || '—'}</dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : (
+                <p className="request-empty">Sinh viên chưa cung cấp nội dung kê khai.</p>
+              )}
+              {app.note && !formData.note && (
+                <p className="student-note"><strong>Ghi chú sinh viên:</strong> {app.note}</p>
+              )}
             </div>
           </section>
 
@@ -116,25 +199,72 @@ export default function ApplicationDetail() {
               <div className="detail-panel-title">
                 <FileText size={19} />
                 <h2>Hồ sơ đính kèm</h2>
+                <span className="attachment-count">{attachments.length} tệp</span>
               </div>
 
               {pdfFiles.length > 0 && (
                 <div className="pdf-preview-wrapper">
                   <div className="pdf-preview-header">
-                    <span>Đơn xác nhận sinh viên</span>
+                    <span className="pdf-file-title">
+                      <FileText size={16} />
+                      {pdfFiles[0].split('/').pop()?.split('?')[0]}
+                    </span>
                     <span>{pdfFiles.length} file PDF</span>
                   </div>
-                  <iframe
-                    className="pdf-preview"
-                    title="Preview hồ sơ PDF"
-                    src={pdfFiles[0]}
-                  />
+                  <div className="pdf-toolbar" role="toolbar" aria-label="Công cụ xem PDF">
+                    <div className="pdf-zoom-controls">
+                      <button
+                        type="button"
+                        className="pdf-tool-button"
+                        aria-label="Thu nhỏ PDF"
+                        title="Thu nhỏ"
+                        disabled={pdfZoom <= 75}
+                        onClick={() => setPdfZoom((zoom) => Math.max(75, zoom - 25))}
+                      >
+                        <ZoomOut size={17} />
+                      </button>
+                      <span aria-live="polite">{pdfZoom}%</span>
+                      <button
+                        type="button"
+                        className="pdf-tool-button"
+                        aria-label="Phóng to PDF"
+                        title="Phóng to"
+                        disabled={pdfZoom >= 150}
+                        onClick={() => setPdfZoom((zoom) => Math.min(150, zoom + 25))}
+                      >
+                        <ZoomIn size={17} />
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      className="pdf-tool-button pdf-rotate-button"
+                      onClick={() => setPdfRotation((rotation) => (rotation + 90) % 360)}
+                    >
+                      <RotateCw size={16} /> Xoay
+                    </button>
+                    <div className="pdf-toolbar-actions">
+                      <a href={pdfFiles[0]} target="_blank" rel="noreferrer" className="pdf-tool-button" aria-label="Mở PDF ở tab mới" title="Mở ở tab mới">
+                        <ExternalLink size={16} />
+                      </a>
+                      <a href={pdfFiles[0]} download className="pdf-tool-button" aria-label="Tải PDF về" title="Tải về">
+                        <Download size={16} />
+                      </a>
+                    </div>
+                  </div>
+                  <div className="pdf-viewport">
+                    <iframe
+                      className={`pdf-preview ${pdfRotation % 180 !== 0 ? 'is-rotated' : ''}`}
+                      title={`Xem trước ${pdfFiles[0].split('/').pop()?.split('?')[0]}`}
+                      src={pdfFiles[0]}
+                      style={{ zoom: pdfZoom / 100, transform: `rotate(${pdfRotation}deg)` }}
+                    />
+                  </div>
                 </div>
               )}
 
-              {attachments.map((file) => (
+              {attachments.filter((file) => file !== pdfFiles[0]).map((file) => (
                 <div className="attachment-row" key={file}>
-                  <span><FileText size={17} />{file.split('/').pop()}</span>
+                  <span><FileText size={17} />{file.split('/').pop()?.split('?')[0]}</span>
                   <div>
                     <a href={file} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm">
                       <Eye size={14} /> Xem
@@ -238,11 +368,16 @@ export default function ApplicationDetail() {
           )}
 
           <section className="detail-panel contact-panel">
-            <span className="detail-eyebrow">THÔNG TIN SINH VIÊN</span>
-            <p><strong>{app.student?.fullName}</strong></p>
-            <p>{app.student?.email}</p>
-            <p>{app.student?.phone || 'Chưa cập nhật số điện thoại'}</p>
-            <p>{app.student?.faculty || 'Chưa cập nhật khoa'} · {app.student?.className || 'Chưa cập nhật lớp'}</p>
+            <div className="detail-panel-title">
+              <UserRound size={18} />
+              <h2>Thông tin sinh viên</h2>
+            </div>
+            <div className="contact-detail">
+              <strong>{studentName}</strong>
+              <p><Mail size={15} />{app.student?.email || 'Chưa cập nhật email'}</p>
+              <p><Phone size={15} />{app.student?.phone || 'Chưa cập nhật số điện thoại'}</p>
+              <p><Building2 size={15} />{app.student?.faculty || 'Chưa cập nhật chuyên ngành'} · {app.student?.className || 'Chưa cập nhật lớp'}</p>
+            </div>
           </section>
         </aside>
       </div>

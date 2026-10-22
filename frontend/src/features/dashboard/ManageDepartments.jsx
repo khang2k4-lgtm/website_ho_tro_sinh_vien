@@ -63,9 +63,9 @@ export default function ManageDepartments() {
           <div className="form-group" style={{ gridColumn: '1 / -1' }}><label className="label">Mô tả</label><input className="input" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
           <div className="form-group"><label className="label">Email</label><input className="input" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
           <div className="form-group"><label className="label">Địa chỉ</label><input className="input" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} /></div>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div className="form-actions">
+            {editingId && <button className="btn btn-secondary" type="button" onClick={resetForm}>Hủy</button>}
             <button className="btn btn-primary" type="submit">{editingId ? 'Lưu thay đổi' : 'Tạo'}</button>
-            {editingId && <button className="btn btn-outline" type="button" onClick={resetForm}>Hủy</button>}
           </div>
         </div>
       </form>

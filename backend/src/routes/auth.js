@@ -50,6 +50,7 @@ router.post('/login', async (req, res) => {
 
     const { password: _, ...safeUser } = user;
     const token = generateToken(safeUser);
+    await createAuditLog(safeUser.id, 'LOGIN', 'User', safeUser.id, 'Đăng nhập hệ thống');
     res.json({ user: safeUser, token });
   } catch (err) {
     res.status(500).json({ message: err.message });

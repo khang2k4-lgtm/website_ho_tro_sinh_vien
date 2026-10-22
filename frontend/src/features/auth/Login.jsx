@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { STAFF_ROLES } from '../../utils/constants';
+import { KeyRound } from 'lucide-react';
+
+const demoAccounts = [
+  { label: 'Sinh viên', email: 'sv001@humg.edu.vn', password: '123456' },
+  { label: 'Nhân viên', email: 'nv.ctsv@humg.edu.vn', password: '123456' },
+  { label: 'Quản lý phòng', email: 'ql.ctsv@humg.edu.vn', password: '123456' },
+  { label: 'Admin', email: 'admin@humg.edu.vn', password: '123456' },
+];
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -10,6 +18,12 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const fillDemoAccount = (account) => {
+    setEmail(account.email);
+    setPassword(account.password);
+    setError('');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,41 +44,48 @@ export default function Login() {
   };
 
   return (
-    <div className="container" style={{ maxWidth: 440, padding: '4rem 1.5rem' }}>
-      <div className="card">
-        <div className="card-body">
-          <h1 className="page-title" style={{ textAlign: 'center' }}>Đăng nhập</h1>
-          <p className="page-subtitle" style={{ textAlign: 'center' }}>Cổng dịch vụ sinh viên HUMG</p>
-
-          {error && <div style={{ background: 'var(--danger-bg)', color: 'var(--danger)', padding: '0.75rem', borderRadius: 8, marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
-
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="label">Email</label>
-              <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="sv001@humg.edu.vn" />
-            </div>
-            <div className="form-group">
-              <label className="label">Mật khẩu</label>
-              <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••" />
-            </div>
-            <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={loading}>
-              {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
-            </button>
-          </form>
-
-          <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-            Chưa có tài khoản? <Link to="/dang-ky" style={{ color: 'var(--primary)', fontWeight: 600 }}>Đăng ký</Link>
-          </p>
-
-          <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'var(--bg)', borderRadius: 8, fontSize: '0.8125rem' }}>
-            <strong>Demo:</strong><br />
-            Sinh viên: sv001@humg.edu.vn / 123456<br />
-            Nhân viên: nv.ctsv@humg.edu.vn / 123456<br />
-            Quản lý phòng: ql.ctsv@humg.edu.vn / 123456<br />
-            Admin: admin@humg.edu.vn / 123456
-          </div>
-        </div>
+    <section className="auth-card auth-login-card">
+      <div className="auth-heading">
+        <h1>Đăng nhập</h1>
+        <p>Nhập thông tin tài khoản sinh viên hoặc cán bộ.</p>
       </div>
-    </div>
+
+      {error && <div className="auth-alert" role="alert">{error}</div>}
+
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label className="label" htmlFor="login-email">Email</label>
+          <input id="login-email" className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="name@humg.edu.vn" autoComplete="email" />
+        </div>
+        <div className="form-group">
+          <label className="label" htmlFor="login-password">Mật khẩu</label>
+          <input id="login-password" className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Nhập mật khẩu" autoComplete="current-password" />
+        </div>
+        <button type="submit" className="btn auth-submit" disabled={loading}>
+          {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+        </button>
+      </form>
+
+      <p className="auth-switch">
+        Chưa có tài khoản? <Link to="/dang-ky">Đăng ký</Link>
+      </p>
+
+      <details className="auth-demo">
+        <summary><KeyRound size={16} /> Tài khoản trải nghiệm</summary>
+        <div className="auth-demo-list">
+          {demoAccounts.map((account) => (
+            <div className="auth-demo-account" key={account.email}>
+              <div className="auth-demo-info">
+                <strong>{account.label}</strong>
+                <span>{account.email}</span>
+              </div>
+              <button type="button" className="btn btn-outline btn-sm" onClick={() => fillDemoAccount(account)}>
+                Chọn
+              </button>
+            </div>
+          ))}
+        </div>
+      </details>
+    </section>
   );
 }

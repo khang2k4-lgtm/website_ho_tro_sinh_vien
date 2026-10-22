@@ -1,0 +1,680 @@
+.dept-page {
+  display: grid;
+  gap: 1rem;
+  color: #24394d;
+}
+
+.dept-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dept-page-header .page-title {
+  margin-top: 0.2rem;
+  color: #12304a;
+}
+
+.dept-breadcrumb-separator {
+  margin: 0 0.25rem;
+  color: #91a1b0;
+}
+
+.dept-preview-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.68rem 0.85rem;
+  border: 1px solid #cfe5f4;
+  border-radius: 10px;
+  background: #f1f9ff;
+  color: #326985;
+  font-size: 0.8rem;
+}
+
+.dept-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.dept-metric,
+.dept-panel,
+.dept-warning-banner,
+.dept-dispatch-status,
+.dept-deadline-card {
+  border: 1px solid #e0ebf3;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 6px 20px rgb(15 38 63 / 0.035);
+}
+
+.dept-metric {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  min-height: 112px;
+  padding: 1rem;
+}
+
+.dept-metric-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 11px;
+  background: #eaf5ff;
+  color: #297db5;
+}
+
+.dept-metric-icon.violet { background: #f2efff; color: #7355bd; }
+.dept-metric-icon.cyan { background: #e9faff; color: #168aa8; }
+.dept-metric-icon.green { background: #eaf8ef; color: #28814e; }
+
+.dept-metric > div {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.dept-metric small,
+.dept-metric > div > span {
+  color: #728397;
+  font-size: 0.76rem;
+}
+
+.dept-metric strong {
+  color: #17334d;
+  font-size: 1.14rem;
+}
+
+.dept-panel {
+  min-width: 0;
+  padding: 1.05rem 1.15rem;
+}
+
+.dept-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.85rem;
+}
+
+.dept-panel-heading h2 {
+  color: #19334b;
+  font-size: 1rem;
+}
+
+.dept-panel-heading p {
+  margin-top: 0.2rem;
+  color: #728397;
+  font-size: 0.78rem;
+}
+
+.dept-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.dept-action-row .btn,
+.dept-report-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.dept-action-row > .btn-primary {
+  margin-left: auto;
+}
+
+.dept-table-wrap {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.dept-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #35495d;
+  font-size: 0.79rem;
+  white-space: nowrap;
+}
+
+.dept-table th {
+  padding: 0.68rem 0.58rem;
+  background: #f6f9fc;
+  color: #728397;
+  font-size: 0.68rem;
+  font-weight: 750;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.dept-table td {
+  padding: 0.72rem 0.58rem;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.dept-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.dept-table input[type="checkbox"],
+.dept-approval-list input {
+  width: 15px;
+  height: 15px;
+  accent-color: #168fc4;
+}
+
+.dept-table td strong {
+  color: #2e455a;
+}
+
+.dept-table select,
+.dept-inline-input {
+  min-height: 34px;
+  max-width: 220px;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #dce7ef;
+  border-radius: 7px;
+  background: #fff;
+  color: #40566b;
+  font: inherit;
+}
+
+.dept-priority {
+  display: inline-flex;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: #fff4df;
+  color: #a87318;
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.dept-priority.urgent {
+  background: #fff0ed;
+  color: #bc4941;
+}
+
+.dept-warning-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1rem;
+  border-color: #f0d5d2;
+  background: #fff7f5;
+  color: #b64b43;
+}
+
+.dept-warning-banner > div {
+  display: grid;
+}
+
+.dept-warning-banner span {
+  color: #896f6c;
+  font-size: 0.78rem;
+}
+
+.dept-warning-banner.mild {
+  border-color: #f2dfba;
+  background: #fff9ec;
+  color: #ad791e;
+}
+
+.dept-reason {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.dept-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.dept-row-actions button,
+.dept-inline-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #137daf;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dept-row-actions button:first-child {
+  color: #ad791e;
+}
+
+.dept-empty {
+  padding: 1.5rem !important;
+  color: #718399;
+  text-align: center;
+}
+
+.dept-progress-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.dept-progress-row {
+  display: grid;
+  grid-template-columns: minmax(130px, 190px) minmax(80px, 1fr) 42px;
+  align-items: center;
+  gap: 0.75rem;
+  color: #40566b;
+  font-size: 0.8rem;
+}
+
+.dept-progress-row strong {
+  font-weight: 650;
+}
+
+.dept-progress-row b {
+  color: #42627b;
+  text-align: right;
+}
+
+.dept-progress-track {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #edf3f8;
+}
+
+.dept-progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #168fc4, #42b7ad);
+}
+
+.dept-kpi-badge,
+.dept-report-status {
+  display: inline-flex;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  background: #eaf8ef;
+  color: #28814e;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.dept-weekly-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 0.8rem;
+  min-height: 190px;
+  padding: 0.8rem 0.2rem 0;
+  border-bottom: 1px solid #e6edf3;
+}
+
+.dept-day-bars {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  color: #65798d;
+  font-size: 0.72rem;
+}
+
+.dept-bar-pair {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 150px;
+}
+
+.dept-bar-pair span {
+  width: 18px;
+  min-height: 4px;
+  border-radius: 5px 5px 0 0;
+}
+
+.dept-bar-pair .goal,
+.dept-chart-legend .goal {
+  background: #c7d9e7;
+}
+
+.dept-bar-pair .actual,
+.dept-chart-legend .actual {
+  background: #168fc4;
+}
+
+.dept-chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+  color: #718399;
+  font-size: 0.73rem;
+}
+
+.dept-chart-legend span {
+  width: 9px;
+  height: 9px;
+  margin-left: 0.6rem;
+  border-radius: 2px;
+}
+
+.dept-dispatch-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+}
+
+.dept-dispatch-status > span {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #36a66c;
+  box-shadow: 0 0 0 4px #e8f7ee;
+}
+
+.dept-dispatch-status > div {
+  display: grid;
+  flex: 1;
+}
+
+.dept-dispatch-status strong {
+  color: #2b6145;
+  font-size: 0.85rem;
+}
+
+.dept-dispatch-status small {
+  color: #74879a;
+  font-size: 0.76rem;
+}
+
+.dept-save-rule {
+  margin-top: 0.7rem;
+}
+
+.dept-queue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.dept-queue-card {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.75rem;
+  border: 1px solid #e6edf3;
+  border-radius: 9px;
+  background: #fbfdff;
+}
+
+.dept-queue-card strong {
+  color: #2d4961;
+  font-size: 0.76rem;
+}
+
+.dept-queue-card > span,
+.dept-queue-card small {
+  color: #718399;
+  font-size: 0.72rem;
+}
+
+.dept-queue-card small.pending {
+  color: #a87318;
+}
+
+.dept-queue-card small.routed {
+  color: #28814e;
+}
+
+.dept-report-status {
+  background: #fff4df;
+  color: #a87318;
+}
+
+.dept-report-status.done {
+  background: #eaf8ef;
+  color: #28814e;
+}
+
+.dept-approval-list {
+  display: grid;
+}
+
+.dept-approval-list label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  border-top: 1px solid #edf2f7;
+  color: #40566b;
+  font-size: 0.82rem;
+}
+
+.dept-approval-list label span {
+  flex: 1;
+}
+
+.dept-approval-list small {
+  color: #718399;
+  font-size: 0.72rem;
+}
+
+.dept-approve-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+
+.dept-deadline-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  color: #a87318;
+  border-color: #f2dfba;
+  background: #fff9ec;
+}
+
+.dept-deadline-card > div {
+  display: grid;
+  flex: 1;
+}
+
+.dept-deadline-card strong {
+  font-size: 0.85rem;
+}
+
+.dept-deadline-card span {
+  color: #8e7447;
+  font-size: 0.75rem;
+}
+
+.dept-deadline-pill {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: #fff0cf;
+  font-size: 0.7rem !important;
+  font-weight: 700;
+}
+
+.dept-report-draft {
+  padding: 1rem;
+  border: 1px solid #e5edf4;
+  border-radius: 9px;
+  background: #f9fbfd;
+}
+
+.dept-report-draft h3 {
+  margin-bottom: 0.7rem;
+  color: #2c465e;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+}
+
+.dept-report-draft ul {
+  display: grid;
+  gap: 0.5rem;
+  padding-left: 1.15rem;
+  color: #52677b;
+  font-size: 0.8rem;
+}
+
+.dept-report-draft li strong {
+  color: #304c65;
+}
+
+.dept-proposal-label {
+  display: block;
+  margin: 0.9rem 0 0.35rem;
+  color: #52677b;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.dept-panel textarea {
+  display: block;
+  width: 100%;
+  resize: vertical;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #dce7ef;
+  border-radius: 8px;
+  color: #35495d;
+  font: inherit;
+  font-size: 0.8rem;
+}
+
+.dept-report-actions {
+  justify-content: flex-end;
+}
+
+.dept-feedback {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: min(520px, calc(100vw - 2rem));
+  padding: 0.85rem 1rem;
+  border: 1px solid #cfe5f4;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgb(15 38 63 / 0.14);
+  color: #305a74;
+  font-size: 0.82rem;
+}
+
+.dept-feedback button {
+  border: 0;
+  background: transparent;
+  color: #61788a;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .dept-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dept-queue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .dept-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dept-action-row > .btn-primary {
+    margin-left: 0;
+  }
+
+  .dept-progress-row {
+    grid-template-columns: minmax(90px, 125px) minmax(55px, 1fr) 36px;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+  }
+
+  .dept-queue-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dept-dispatch-status {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .dept-dispatch-status > .btn {
+    margin-left: 1.3rem;
+  }
+
+  .dept-weekly-chart {
+    gap: 0.25rem;
+  }
+
+  .dept-bar-pair span {
+    width: 12px;
+  }
+
+  .dept-day-bars {
+    font-size: 0.62rem;
+  }
+
+  .dept-deadline-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .dept-deadline-pill {
+    margin-left: 2rem;
+  }
+
+  .dept-report-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media print {
+  .dashboard-layout,
+  .dashboard-body,
+  .dashboard-content {
+    display: block;
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    background: #fff;
+  }
+
+  .dashboard-sidebar,
+  .dashboard-layout > header,
+  .dept-preview-notice,
+  .dept-report-actions,
+  .dept-feedback {
+    display: none !important;
+  }
+
+  .dept-page {
+    gap: 0.5rem;
+  }
+
+  .dept-panel,
+  .dept-deadline-card {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+}

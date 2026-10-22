@@ -1,6 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CheckCircle, Clock, Building2 } from 'lucide-react';
+import {
+  ArrowRight,
+  Building2,
+  CheckCircle2,
+  Clock3,
+  FileText,
+  Mail,
+  Phone,
+  Printer,
+  ShieldCheck,
+} from 'lucide-react';
 import api from '../../services/api';
 import { CATEGORIES } from '../../utils/constants';
 
@@ -15,68 +25,159 @@ export default function ServiceDetail() {
   if (!service) return <div className="loading container">Đang tải...</div>;
 
   return (
-    <div className="container" style={{ padding: '2rem 1.5rem' }}>
-      <div className="grid grid-2" style={{ alignItems: 'start' }}>
-        <div>
-          <span className="badge badge-info">{CATEGORIES[service.category]}</span>
-          <h1 className="page-title" style={{ marginTop: '0.5rem' }}>{service.name}</h1>
-          <p className="page-subtitle">{service.description}</p>
+    <div className="service-detail-page">
+      <div className="container">
+        <div className="service-detail-topbar">
+          <nav className="service-detail-breadcrumb" aria-label="Breadcrumb">
+            <Link to="/">Trang chủ</Link>
+            <span>/</span>
+            <Link to="/dich-vu">Dịch vụ sinh viên</Link>
+            <span>/</span>
+            <span>{service.name}</span>
+          </nav>
 
-          <div className="card" style={{ marginBottom: '1.5rem' }}>
-            <div className="card-header">Tóm tắt thủ tục</div>
-            <div className="card-body" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
-              <div>
-                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--muted)' }}>Cơ quan giải quyết</div>
-                <div style={{ fontWeight: 600, marginTop: '0.3rem' }}>{service.department?.name}</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--muted)' }}>Thời gian</div>
-                <div style={{ fontWeight: 600, marginTop: '0.3rem' }}>{service.processingTime}</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--muted)' }}>Hình thức</div>
-                <div style={{ fontWeight: 600, marginTop: '0.3rem' }}>{service.submissionType}</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="card" style={{ marginBottom: '1.5rem' }}>
-            <div className="card-header">Hồ sơ cần thiết</div>
-            <div className="card-body">
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                {service.requiredDocs?.map((d, i) => (
-                  <li key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                    <CheckCircle size={18} style={{ color: 'var(--success)', flexShrink: 0 }} /> <span>{d}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div className="card">
-            <div className="card-header">Quy trình giải quyết</div>
-            <div className="card-body">
-              <ol style={{ paddingLeft: '1.25rem', margin: 0 }}>
-                {service.steps?.map((s, i) => <li key={i} style={{ marginBottom: '0.5rem' }}>{s}</li>)}
-              </ol>
-            </div>
-          </div>
+          <button type="button" className="service-print-btn" onClick={() => window.print()}>
+            <Printer size={15} />
+            In thủ tục
+          </button>
         </div>
 
-        <div>
-          <div className="card" style={{ position: 'sticky', top: 90 }}>
-            <div className="card-body">
-              <div style={{ marginBottom: '1rem' }}>
-                <Building2 size={18} style={{ display: 'inline', marginRight: 8 }} />
-                <Link to={`/phong-ban/${service.department?.slug}`} style={{ color: 'var(--primary)', fontWeight: 600 }}>{service.department?.name}</Link>
+        <div className="service-detail-layout">
+          <article className="service-detail-main">
+            <header className="service-detail-header">
+              <span className="badge badge-info">{CATEGORIES[service.category]}</span>
+              <h1>{service.name}</h1>
+              <p>{service.description}</p>
+            </header>
+
+            <section className="detail-card">
+              <div className="detail-card-header">
+                <h2>Tóm tắt thủ tục</h2>
               </div>
-              <div style={{ marginBottom: '0.75rem' }}><Clock size={16} style={{ display: 'inline', marginRight: 8 }} />{service.processingTime}</div>
-              <div style={{ marginBottom: '0.75rem' }}>Hình thức: <strong>{service.submissionType}</strong></div>
-              {service.fee && <div style={{ marginBottom: '0.75rem' }}>Phí: {service.fee}</div>}
-              {service.avgRating > 0 && <div style={{ marginBottom: '1rem' }}>⭐ {service.avgRating.toFixed(1)}/5</div>}
-              <Link to={`/nop-ho-so/${service.slug}`} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>Nộp hồ sơ online</Link>
+              <div className="detail-card-body detail-summary-grid">
+                <div className="detail-stat">
+                  <span>Cơ quan giải quyết</span>
+                  <strong>{service.department?.name}</strong>
+                </div>
+                <div className="detail-stat">
+                  <span>Thời gian</span>
+                  <strong>{service.processingTime}</strong>
+                </div>
+                <div className="detail-stat">
+                  <span>Hình thức</span>
+                  <strong>{service.submissionType}</strong>
+                </div>
+              </div>
+            </section>
+
+            <section className="detail-card">
+              <div className="detail-card-header">
+                <h2>Hồ sơ cần thiết</h2>
+              </div>
+              <div className="detail-card-body">
+                <ul className="detail-check-list">
+                  {service.requiredDocs?.map((doc, index) => (
+                    <li key={`${doc}-${index}`}>
+                      <span className="detail-check-icon">
+                        <CheckCircle2 size={18} />
+                      </span>
+                      <span>{doc}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+
+            <section className="detail-card">
+              <div className="detail-card-header">
+                <h2>Quy trình giải quyết</h2>
+              </div>
+              <div className="detail-card-body">
+                <ol className="detail-step-list">
+                  {service.steps?.map((step, index) => (
+                    <li key={`${step}-${index}`}>
+                      <div className="detail-step-number">{index + 1}</div>
+                      <div>
+                        <h3>{step}</h3>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </section>
+
+            <section className="detail-card">
+              <div className="detail-card-header">
+                <h2>Lệ phí & Căn cứ pháp lý</h2>
+              </div>
+              <div className="detail-card-body detail-faq-grid">
+                <div className="detail-mini-card">
+                  <div className="mini-card-title">
+                    <ShieldCheck size={16} />
+                    Lệ phí quy định
+                  </div>
+                  <p>{service.fee || 'Theo quy định hiện hành của Trường và cơ quan giải quyết.'}</p>
+                </div>
+                <div className="detail-mini-card">
+                  <div className="mini-card-title">
+                    <Building2 size={16} />
+                    Căn cứ thực hiện
+                  </div>
+                  <p>
+                    Theo quy định về hồ sơ, xác thực và quản lý thủ tục hành chính của Trường Đại học Mỏ - Địa chất và các văn bản liên quan.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <aside className="service-detail-sidebar">
+            <div className="detail-action-card">
+              <div className="detail-office-header">
+                <div className="detail-office-icon">
+                  <FileText size={18} />
+                </div>
+                <div>
+                  <h3>{service.department?.name}</h3>
+                  <p>Trường Đại học Mỏ - Địa chất</p>
+                </div>
+              </div>
+
+              <div className="detail-meta-list">
+                <div className="detail-meta-item">
+                  <Clock3 size={16} />
+                  <div>
+                    <span>Thời gian xử lý</span>
+                    <strong>{service.processingTime}</strong>
+                  </div>
+                </div>
+
+                <div className="detail-meta-item">
+                  <Building2 size={16} />
+                  <div>
+                    <span>Hình thức tiếp nhận</span>
+                    <strong>{service.submissionType}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <Link to={`/nop-ho-so/${service.slug}`} className="service-primary-btn">
+                <FileText size={16} />
+                Nộp hồ sơ online
+              </Link>
+
+              <div className="detail-contact-box">
+                <div>
+                  <Phone size={14} />
+                  <span>Hotline: (024) 3838 9633</span>
+                </div>
+                <div>
+                  <Mail size={14} />
+                  <span>hanhchinh@humg.edu.vn</span>
+                </div>
+              </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </div>

@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Building2, Clock3, FileCheck2, Search, ShieldCheck } from 'lucide-react';
 import api from '../../services/api';
 import { CATEGORIES } from '../../utils/constants';
 import './ServiceList.css';
 
 export default function ServiceList() {
+  const [searchParams] = useSearchParams();
   const [services, setServices] = useState([]);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(searchParams.get('category') || '');
   const [departmentId, setDepartmentId] = useState('');
   const [search, setSearch] = useState('');
 
@@ -34,7 +35,7 @@ export default function ServiceList() {
 
   return (
     <>
-      <section className="page-hero">
+      <section className="page-hero service-list-hero">
         <div className="container">
           <div className="page-kicker">Trung tâm một cửa</div>
           <h1 className="page-title">Dịch vụ sinh viên</h1>
@@ -46,7 +47,7 @@ export default function ServiceList() {
         </div>
       </section>
 
-      <div className="container page-content">
+      <div className="container page-content service-list-content">
         <div className="summary-strip">
           <div className="summary-item">
             <span className="summary-label">Tổng thủ tục</span>

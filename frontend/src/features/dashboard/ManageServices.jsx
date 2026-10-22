@@ -84,7 +84,7 @@ export default function ManageServices() {
               {Object.entries(CATEGORIES).filter(([k]) => k !== 'CO_SO_VAT_CHAT').map(([k, v]) => <option key={k} value={k}>{v}</option>)}
             </select>
           </div>
-          <div className="action-row" style={{ gridColumn: '1 / -1' }}><button className="btn btn-primary" type="submit" disabled={saving}>{saving ? 'Đang lưu...' : editingId ? 'Lưu thay đổi' : 'Tạo dịch vụ'}</button>{editingId && <button className="btn btn-outline" type="button" onClick={resetForm}><X size={16} />Hủy</button>}</div>
+          <div className="form-actions">{editingId && <button className="btn btn-secondary" type="button" onClick={resetForm}><X size={16} />Hủy</button>}<button className="btn btn-primary" type="submit" disabled={saving}>{saving ? 'Đang lưu...' : editingId ? 'Lưu thay đổi' : 'Tạo dịch vụ'}</button></div>
         </div>
       </form>
       <div className="page-toolbar"><label className="field-search" style={{ maxWidth: 420 }}><Search size={18} /><input className="input" aria-label="Tìm dịch vụ" placeholder="Tìm theo tên hoặc phòng ban" value={search} onChange={(e) => setSearch(e.target.value)} /></label><span style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>{visibleItems.length} dịch vụ</span></div>
